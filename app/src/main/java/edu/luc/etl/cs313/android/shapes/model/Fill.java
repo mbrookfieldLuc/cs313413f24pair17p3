@@ -9,10 +9,12 @@ public class Fill implements Shape {
     protected final Shape shape;
 
     public Fill(final Shape shape) {
+
         this.shape = shape;
     }
 
     public Shape getShape() {
+
         return shape;
     }
 

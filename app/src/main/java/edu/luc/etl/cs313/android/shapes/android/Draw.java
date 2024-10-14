@@ -1,6 +1,8 @@
 package edu.luc.etl.cs313.android.shapes.android;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import edu.luc.etl.cs313.android.shapes.model.*;
@@ -36,7 +38,8 @@ public class Draw implements Visitor<Void> {
     @Override
     public Void onFill(final Fill f) {
         paint.setStyle(Style.FILL);
-        //paint.setColor(f.getColor());
+        paint.setColor(Color.RED);
+        f.getShape().accept(this);
         return null;
     }
 
@@ -52,13 +55,16 @@ public class Draw implements Visitor<Void> {
 
     @Override
     public Void onLocation(final Location l) {
+        canvas.save();
         canvas.translate(l.getX(), l.getY());
+        l.getShape().accept(this);
+        canvas.restore();
         return null;
     }
 
     @Override
     public Void onRectangle(final Rectangle r) {
-        //canvas.dra
+        canvas.drawRect(0, 0, r.getWidth(), r.getHeight(), paint);
         return null;
     }
 
