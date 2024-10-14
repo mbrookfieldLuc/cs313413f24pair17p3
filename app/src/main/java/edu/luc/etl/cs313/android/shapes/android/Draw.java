@@ -36,39 +36,48 @@ public class Draw implements Visitor<Void> {
     @Override
     public Void onFill(final Fill f) {
         paint.setStyle(Style.FILL);
-        paint.setColor(f.getColor());
+        //paint.setColor(f.getColor());
         return null;
     }
 
     @Override
     public Void onGroup(final Group g) {
+        for(Shape shape : g.getShapes()) {
+            //group all shapes
+            shape.accept(this);
+        }
 
         return null;
     }
 
     @Override
     public Void onLocation(final Location l) {
-
+        canvas.translate(l.getX(), l.getY());
         return null;
     }
 
     @Override
     public Void onRectangle(final Rectangle r) {
-
+        //canvas.dra
         return null;
     }
 
     @Override
     public Void onOutline(Outline o) {
-
+        paint.setStyle(Style.STROKE);
+        o.getShape().accept(this);
         return null;
     }
 
     @Override
     public Void onPolygon(final Polygon s) {
 
-        final float[] pts = null;
-
+        final float[] pts = new float[s.getPoints().size() * 2];
+        int i = 0;
+        for(Point p : s.getPoints()) {
+            pts[i++] = p.getX();
+            pts[i++] = p.getY();
+        }
         canvas.drawLines(pts, paint);
         return null;
     }
