@@ -36,7 +36,7 @@ public class Count implements Visitor<Integer> {
 
     @Override
     public Integer onOutline(final Outline o) {
-        return -1;
+        return o.getShape().accept(this);
     }
 
     @Override
