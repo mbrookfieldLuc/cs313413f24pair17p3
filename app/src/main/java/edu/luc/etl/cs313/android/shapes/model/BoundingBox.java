@@ -1,4 +1,5 @@
 package edu.luc.etl.cs313.android.shapes.model;
+import java.util.List;
 
 /**
  * A shape visitor for calculating the bounding box, that is, the smallest
@@ -80,17 +81,23 @@ public class BoundingBox implements Visitor<Location> {
 
     @Override
     public Location onPolygon(final Polygon s) {
+        List<? extends Point> points = s.getPoints();
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE;
         int maxY = Integer.MIN_VALUE;
 
-        for(Point p : s.getPoints()) {
-            minX = Math.min(minX, p.getX());
-            minY = Math.min(minY, p.getY());
-            maxX = Math.max(maxX, p.getX());
-            maxY = Math.max(maxY, p.getY());
+        // Iterate through all points in the polygon
+        for (Point point : points) {
+            minX = Math.min(minX, point.getX());
+            minY = Math.min(minY, point.getY());
+            maxX = Math.max(maxX, point.getX());
+            maxY = Math.max(maxY, point.getY());
+
         }
-        return new Location(minX, minY, new Rectangle(maxX - minX, maxY- minY));
+
+        return new Location(minX, minY, new Rectangle(maxX - minX, maxY - minY));
+
+
     }
 }

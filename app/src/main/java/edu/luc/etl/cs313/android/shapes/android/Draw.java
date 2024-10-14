@@ -38,7 +38,8 @@ public class Draw implements Visitor<Void> {
     @Override
     public Void onFill(final Fill f) {
         paint.setStyle(Style.FILL);
-        paint.setColor(Color.RED);
+        //Likely issue is here
+
         f.getShape().accept(this);
         return null;
     }
@@ -77,14 +78,25 @@ public class Draw implements Visitor<Void> {
 
     @Override
     public Void onPolygon(final Polygon s) {
-
-        final float[] pts = new float[s.getPoints().size() * 2];
-        int i = 0;
-        for(Point p : s.getPoints()) {
-            pts[i++] = p.getX();
-            pts[i++] = p.getY();
+        int numPoints = s.getPoints().size();
+        if (numPoints > 1) {
+            final float[] pts = new float[(numPoints - 1) * 4];
+            int i = 0;
+            Point prevPoint = s.getPoints().get(0);
+            for (int j = 1; j < numPoints; j++) {
+                Point currentPoint = s.getPoints().get(j);
+                pts[i++] = prevPoint.getX();
+                pts[i++] = prevPoint.getY();
+                pts[i++] = currentPoint.getX();
+                pts[i++] = currentPoint.getY();
+                prevPoint = currentPoint;
+            }
+            canvas.drawLines(pts, paint);
+            // Draw the closing line segment to complete the polygon
+            Point firstPoint = s.getPoints().get(0);
+            canvas.drawLine(prevPoint.getX(), prevPoint.getY(), firstPoint.getX(), firstPoint.getY(), paint);
         }
-        canvas.drawLines(pts, paint);
         return null;
+
     }
 }
