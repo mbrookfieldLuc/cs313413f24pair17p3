@@ -38,7 +38,7 @@ public class Draw implements Visitor<Void> {
     @Override
     public Void onFill(final Fill f) {
         paint.setStyle(Style.FILL);
-        //Likely issue is here
+
 
         f.getShape().accept(this);
         return null;
